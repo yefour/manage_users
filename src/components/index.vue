@@ -76,15 +76,15 @@
 				label:true
 			};
 		},
-//		beforeRouteEnter:(to,from,next)=>{
-//
-//			if(localStorage.getItem('data')!=""){
-//				next()   //直接进入index
-//			}else{
-//				alert("请先登录")
-//				next('Login') // 未登录时直接进入login
-//			}
-//		},
+		beforeRouteEnter:(to,from,next)=>{
+
+			if(localStorage.getItem('data')!=""){
+				next()   //直接进入index
+			}else{
+				alert("请先登录")
+				next('Login') // 未登录时直接进入login
+			}
+		},
 		methods: {
 			handleOpen(key, keyPath) {
 				console.log(key, keyPath);
@@ -100,7 +100,6 @@
 				 	 confirmButtonText: '确定',
   					 cancelButtonText: '取消'
 				 }).then(()=>{
-
 					localStorage.setItem('data',""); //退出时清空用户信息
 					this.$router.push('/Login')
 				 })

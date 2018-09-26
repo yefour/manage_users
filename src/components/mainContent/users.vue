@@ -121,6 +121,7 @@
 					  newMessage.time=myDate;
             newMessage.token=token;
             axios.post("http://www.doylee.cn/api/index/put", newMessage).then(res => {
+                console.log(res.data.msg)
 							if(res.data.code == 0) {
 								this.$message({
 									message: "提交成功！",
@@ -129,7 +130,7 @@
 								axios.get('http://www.doylee.cn/api/')
 									.then((res) => {
 										this.tableData = res.data.data
-										console.log("xinzeng")
+										console.log( res.data.data)
 									})
 									.catch(err => {
 										console.log(err)
@@ -142,22 +143,12 @@
                       console.log(this.total)
                     }
                   })
-							} else if(res.data.code == 2) {
+							} else {
 								this.$message({
-									message: "签名错误",
+									message: res.data.msg,
 									type: 'error'
 								});
-							}else if(res.data.code == 2){
-                this.$message({
-                  message: "服务器错误",
-                  type: 'error'
-                });
-              }else {
-                this.$message({
-                  message: "缺少参数",
-                  type: 'error'
-                });
-              }
+							}
 						})
 					} else {
 //						编辑提交
@@ -268,10 +259,29 @@
 			},
 			//			 查询
 			searchName() {
-				let name = this.filters.name;
-				for(let i = 0; i < this.total; i++) {
+				let val = this.filters.name;
+				let searchInfo={
+				  name:"name",
+          value:val
+        };
+				console.log(searchInfo)
+				if(val){
+				  axios.get("http://www.doylee.cn/Api/Index/search.html?name=name&&value="+val)
+            .then(res=>{
+              if(res.data.code===0){
+                console.log(res.data.data)
+                this.tableData = res.data.data.data
+                this.total =  res.data.data.count
+              }else {
+                this.$message({
+                  message:"无查询结果",
+                  type:"error"
+                })
+              }
 
-				}
+
+            })
+        }
 			}
 
 		}
